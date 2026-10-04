@@ -1,0 +1,159 @@
+# Generated with runic (docs/DECISIONS.md). Adapted from odin-gtk (MIT, docs/LICENSE-odin-gtk.md).
+version: 0
+platforms:
+  - Linux x86_64
+from:
+  language: c
+  shared.linux: 'libglib-2.0.so'
+  headers: ../build/sys/usr/include/glib-2.0/glib.h
+  includedirs:
+    - ../stdinc/
+    - ../build/sys/usr/include/glib-2.0/
+    - ../build/sys/usr/lib/x86_64-linux-gnu/glib-2.0/include/
+  defines:
+    GLIB_COMPILATION: 1
+    GLIB_DISABLE_DEPRECATION_WARNINGS: 1
+  load_all_includes: true
+  extern:
+    - "../stdinc/*"
+    - "../stdinc/sys/*"
+  overwrite:
+    functions:
+      g_assertion_message_cmpint.param.8.type: 'gchar'
+      g_assertion_message_cmpnum.param.8.type: 'gchar'
+    types:
+      gint8: '#SInt8'
+      guint8: '#UInt8'
+      gint16: '#SInt16'
+      guint16: '#UInt16'
+      gint32: '#SInt32'
+      guint32: '#UInt32'
+      gint64: '#SInt64'
+      guint64: '#UInt64'
+      gboolean: '#Bool32'
+      gssize: '#SInt64'
+      gsize: '#UInt64'
+      goffset: 'gint64'
+      gintptr: '#SInt64'
+      guintptr: '#UInt64'
+
+      _GDoubleIEEE754: 'gdouble'
+      _GFloatIEEE754: 'gfloat'
+      _GDate: '#UInt8 #Attr Arr 8 #AttrEnd'
+      GMainContextPusher: '#RawPtr'
+      GMutexLocker: '#RawPtr'
+      GRecMutexLocker: '#RawPtr'
+      GRWLockWriterLocker: '#RawPtr'
+      GRWLockReaderLocker: '#RawPtr'
+
+      GRefString: 'gchar'
+      GIOChannel: '#Opaque'
+      GHookList: '#Opaque'
+      GScannerConfig: '#Opaque'
+
+      GIConv: '#Opaque #Attr Ptr 1 #AttrEnd'
+    constants:
+      'FALSE': '0 #Untyped'
+      'TRUE': '1 #Untyped'
+      'SOURCE_REMOVE': '0 #Untyped'
+      'SOURCE_CONTINUE': '1 #Untyped'
+      'G_MAXSIZE': '"USIZE_MAX" #Untyped'
+      'G_MINSSIZE': '"SSIZE_MIN" #Untyped'
+      'G_MAXSSIZE': '"SSIZE_MAX" #Untyped'
+      'G_DATE_BAD_JULIAN': '0 #Untyped'
+      'G_DATE_BAD_DAY': '0 #Untyped'
+      'G_DATE_BAD_YEAR': '0 #Untyped'
+  ignore:
+    functions:
+      - 'atexit'
+      - '*autoptr*'
+      - '*auto_cleanup*'
+    types:
+      - _GHookList
+      - _GIOChannel
+      - _GScannerConfig
+      - _GIConv
+      - va_list
+      - '*autoptr'
+    constants:
+      - '*GNUC*'
+      - 'G_C_STD_VERSION'
+      - 'G_*INLINE*'
+      # GLIB_MAJOR/MINOR/MICRO_VERSION stay: the version test reads them.
+      - 'GLIB_VERSION_*'
+      - 'GLIB_VAR'
+      - 'GLIB_AVAILABLE_*'
+      - 'GLIB_DEPRECATED*'
+      - 'GLIB_SYSDEF_*'
+      - 'GLIB_SIZEOF_*'
+      - '_GLIB_*'
+      - 'g_*'
+      - 'G_STRLOC'
+      - 'G_STRFUNC'
+      - 'NULL'
+      - 'G_*_INIT'
+      - 'G_OPTION_ENTRY_NULL'
+      - 'G_STMT_*'
+      - 'G_*RETURN*'
+      - 'G_DEPRECATED'
+      - 'G_VA_COPY'
+      - 'G_MODULE_SUFFIX'
+      - 'G_DIR_SEP*'
+      - 'G_SEARCHPATH_SEP*'
+      - 'G_UNICODE_COMBINING_MARK'
+      - 'G_OPTION_REMAINING'
+      - 'G_CSET_LATIN*'
+      - 'G_URI_ERROR'
+      - '*COMPILATION'
+      - '*BUILD'
+      - 'G_VA_COPY_AS_ARRAY'
+to:
+  language: odin
+  package: glib
+  out: glib.odin
+  no_build_tag: true
+  detect:
+    parameters: declared
+    arrays:
+      parse_debug_string: [keys]
+      bookmark_file_set_groups: [groups]
+      datalist_id_remove_multiple: [keys]
+      build_pathv: [args]
+      build_filenamev: [args]
+      poll: [fds]
+      main_context_query: [fds]
+      main_context_check: [fds]
+      key_file_load_from_dirs: [search_dirs]
+      key_file_set_string_list: [list]
+      key_file_set_locale_string_list: [list]
+      key_file_set_boolean_list: [list]
+      key_file_set_double_list: [list]
+      key_file_set_integer_list: [list]
+      markup_collect_attributes: [attribute_names, attribute_values]
+      variant_type_new_tuple: [items]
+      log_structured_array: [fields]
+      log_writer_format_fields: [fields]
+      log_writer_syslog: [fields]
+      log_writer_journald: [fields]
+      log_writer_standard_streams: [fields]
+      log_writer_default: [fields]
+      log_writer_default_set_debug_domains: [domains]
+      option_context_add_main_entries: [entries]
+      option_group_add_entries: [entries]
+      spawn_async_with_pipes_and_fds: [source_fds, target_fds]
+      test_log_buffer_push: [bytes]
+  trim_prefix:
+    types:
+      - g
+      - G
+    functions:
+      - g_
+      - glib_
+    constants:
+      - G_
+    enum_type_name: true
+  extern:
+    sources:
+      "../stdinc/time.h": "core:c/libc"
+      "../stdinc/stdarg.h": "core:c/libc"
+      "../stdinc/pthread.h": "core:sys/posix"
