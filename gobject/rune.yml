@@ -1,0 +1,147 @@
+# Generated with runic (docs/DECISIONS.md). Adapted from odin-gtk (MIT, docs/LICENSE-odin-gtk.md).
+version: 0
+platforms:
+  - Linux x86_64
+from:
+  language: c
+  shared.linux: 'libgobject-2.0.so'
+  headers: ../build/sys/usr/include/glib-2.0/glib-object.h
+  includedirs:
+    - ../stdinc/
+    - ../build/sys/usr/include/glib-2.0/
+    - ../build/sys/usr/lib/x86_64-linux-gnu/glib-2.0/include/
+  defines:
+    GLIB_COMPILATION: 1
+    GLIB_DISABLE_DEPRECATION_WARNINGS: 1
+    GOBJECT_STATIC_COMPILATION: 1
+  load_all_includes: true
+  extern:
+    - "../stdinc/*"
+    - "../stdinc/sys/*"
+    - "../build/sys/usr/include/glib-2.0/glib/*"
+    - "../build/sys/usr/include/glib-2.0/glib.h"
+    - "../build/sys/usr/include/glib-2.0/glib/deprecated/*"
+    - "../build/sys/usr/lib/x86_64-linux-gnu/glib-2.0/include/*"
+  ignore:
+    types:
+      - '*autoptr*'
+    constants:
+      - 'G_STATIC_*'
+      - '_GOBJECT_*'
+      - 'GOBJECT_DEPRECATED_*'
+      - 'GOBJECT_DEPRECATED'
+      - 'GOBJECT_AVAILABLE_*'
+      - 'GOBJECT_VAR'
+      - 'G_TYPE_FUNDAMENTAL_SHIFT'
+      - 'G_VALUE_INIT'
+      - 'G_TYPE*_RESERVED_*'
+      - '_g_type_*'
+    functions:
+      - 'g_object_set'
+      - '*autoptr*'
+      - '*auto_cleanup*'
+  overwrite:
+    types:
+      # !!!!This is 64-Bit only!!!!!
+      _GClosure: '#SInt8 #Attr Arr 32 #AttrEnd'
+      _GParamSpecString: '#SInt8 #Attr Arr 104 #AttrEnd'
+      GClassInitFunc.param.0.type: 'GTypeClass #Attr Ptr 1 #AttrEnd'
+      GInitiallyUnowned: 'GObject'
+      GInitiallyUnownedClass: 'GObjectClass'
+  aliases:
+    g_static_mutex_get_mutex_impl: g_static_mutex_get_mutex
+to:
+  language: odin
+  package: gobject
+  out: gobject.odin
+  no_build_tag: true
+  detect:
+    parameters: declared
+    arrays:
+      closure_invoke: [param_values]
+      cclosure_marshal_generic: [param_values]
+      cclosure_marshal_generic_va: [param_types]
+      cclosure_marshal_VOID__VOID: [param_values]
+      cclosure_marshal_VOID__VOIDv: [param_types]
+      cclosure_marshal_VOID__BOOLEAN: [param_values]
+      cclosure_marshal_VOID__BOOLEANv: [param_types]
+      cclosure_marshal_VOID__CHAR: [param_values]
+      cclosure_marshal_VOID__CHARv: [param_types]
+      cclosure_marshal_VOID__UCHAR: [param_values]
+      cclosure_marshal_VOID__UCHARv: [param_types]
+      cclosure_marshal_VOID__INT: [param_values]
+      cclosure_marshal_VOID__INTv: [param_types]
+      cclosure_marshal_VOID__UINT: [param_values]
+      cclosure_marshal_VOID__UINTv: [param_types]
+      cclosure_marshal_VOID__LONG: [param_values]
+      cclosure_marshal_VOID__LONGv: [param_types]
+      cclosure_marshal_VOID__ULONG: [param_values]
+      cclosure_marshal_VOID__ULONGv: [param_types]
+      cclosure_marshal_VOID__ENUM: [param_values]
+      cclosure_marshal_VOID__ENUMv: [param_types]
+      cclosure_marshal_VOID__FLAGS: [param_values]
+      cclosure_marshal_VOID__FLAGSv: [param_types]
+      cclosure_marshal_VOID__FLOAT: [param_values]
+      cclosure_marshal_VOID__FLOATv: [param_types]
+      cclosure_marshal_VOID__DOUBLE: [param_values]
+      cclosure_marshal_VOID__DOUBLEv: [param_types]
+      cclosure_marshal_VOID__STRING: [param_values]
+      cclosure_marshal_VOID__STRINGv: [param_types]
+      cclosure_marshal_VOID__PARAM: [param_values]
+      cclosure_marshal_VOID__PARAMv: [param_types]
+      cclosure_marshal_VOID__BOXED: [param_values]
+      cclosure_marshal_VOID__BOXEDv: [param_types]
+      cclosure_marshal_VOID__POINTER: [param_values]
+      cclosure_marshal_VOID__POINTERv: [param_types]
+      cclosure_marshal_VOID__OBJECT: [param_values]
+      cclosure_marshal_VOID__OBJECTv: [param_types]
+      cclosure_marshal_VOID__VARIANT: [param_values]
+      cclosure_marshal_VOID__VARIANTv: [param_types]
+      cclosure_marshal_VOID__UINT_POINTER: [param_values]
+      cclosure_marshal_VOID__UINT_POINTERv: [param_types]
+      cclosure_marshal_BOOLEAN__FLAGS: [param_values]
+      cclosure_marshal_BOOLEAN__FLAGSv: [param_types]
+      cclosure_marshal_STRING__OBJECT_POINTER: [param_values]
+      cclosure_marshal_STRING__OBJECT_POINTERv: [param_types]
+      cclosure_marshal_BOOLEAN__BOXED_BOXED: [param_values]
+      cclosure_marshal_BOOLEAN__BOXED_BOXEDv: [param_types]
+      signal_newv: [param_types]
+      signal_emitv: [instance_and_params]
+      signal_chain_from_overridden: [instance_and_params]
+      object_class_install_properties: [pspecs]
+      object_new_with_properties: [names, values]
+      object_newv: [parameters]
+      object_setv: [names, values]
+      object_getv: [names, values]
+      enum_register_static: [const_static_values]
+      flags_register_static: [const_static_values]
+      enum_complete_type_info: [const_values]
+      flags_complete_type_info: [const_values]
+      type_module_register_enum: [const_static_values]
+      type_module_register_flags: [const_static_values]
+  trim_prefix:
+    types:
+      - g
+      - G
+    functions:
+      - g_
+    variables:
+      - g_
+    constants:
+      - G_
+      - TYPE_FLAG_
+      - TYPE_DEBUG_
+      - SIGNAL_
+      - CONNECT_
+      - SIGNAL_MATCH_
+      - BINDING_
+  trim_suffix:
+    functions: _wrapper
+  extern:
+    sources:
+      "../stdinc/stdarg.h": "core:c/libc"
+      "../build/sys/usr/include/glib-2.0/glib/*": "glib glib:glib"
+      "../build/sys/usr/include/glib-2.0/glib.h": "glib glib:glib"
+      "../build/sys/usr/include/glib-2.0/glib/deprecated/*": "glib glib:glib"
+      "../build/sys/usr/lib/x86_64-linux-gnu/glib-2.0/include/*": "glib glib:glib"
+    trim_prefix: true
