@@ -1,0 +1,149 @@
+# Generated with runic (docs/DECISIONS.md). Adapted from odin-gtk (MIT, docs/LICENSE-odin-gtk.md).
+version: 0
+platforms:
+  - Linux x86_64
+from:
+  language: c
+  shared.linux: 'libgio-2.0.so'
+  headers: ../build/sys/usr/include/glib-2.0/gio/gio.h
+  includedirs:
+    - ../stdinc/
+    - ../build/sys/usr/include/glib-2.0/
+    - ../build/sys/usr/lib/x86_64-linux-gnu/glib-2.0/include/
+  defines:
+    GIO_COMPILATION: 1
+    GLIB_COMPILATION: 1
+    GLIB_DISABLE_DEPRECATION_WARNINGS: 1
+  extern:
+    - "../stdinc/*"
+    - "../stdinc/sys/*"
+    - "../build/sys/usr/include/glib-2.0/glib/*"
+    - "../build/sys/usr/include/glib-2.0/glib/deprecated/*"
+    - "../build/sys/usr/include/glib-2.0/gobject/*"
+    - "../build/sys/usr/include/glib-2.0/gmodule/*"
+    - "../build/sys/usr/include/glib-2.0/*.h"
+    - "../build/sys/usr/lib/x86_64-linux-gnu/glib-2.0/include/*"
+  load_all_includes: true
+  overwrite:
+    functions:
+      g_application_add_main_option.param.2.type: '#Extern gchar'
+    constants:
+      'G_DBUS_METHOD_INVOCATION_HANDLED': '"TRUE" #Untyped'
+      'G_DBUS_METHOD_INVOCATION_UNHANDLED': '"FALSE" #Untyped'
+  ignore:
+    types:
+      - va_list
+      - '*autoptr*'
+    constants:
+      - '_GIO_*'
+      - 'GIO_*'
+    functions:
+      - '*autoptr*'
+      - '*auto_cleanup*'
+      # Declared in wrapper.odin with the argv-free application_run (docs/PATCHED.md).
+      - 'g_application_run'
+to:
+  language: odin
+  package: gio
+  out: gio.odin
+  no_build_tag: true
+  detect:
+    parameters: declared
+    arrays:
+      action_map_add_action_entries: [entries]
+      action_map_remove_action_entries: [entries]
+      application_add_main_option_entries: [entries]
+      application_open: [files]
+      initable_newv: [parameters]
+      async_initable_newv_async: [parameters]
+      output_stream_writev: [vectors]
+      output_stream_writev_all: [vectors]
+      output_stream_writev_async: [vectors]
+      output_stream_writev_all_async: [vectors]
+      content_type_set_mime_dirs: [dirs]
+      datagram_based_receive_messages: [messages]
+      datagram_based_send_messages: [messages]
+      dbus_error_register_error_domain: [entries]
+      dbus_annotation_info_lookup: [annotations]
+      dbus_escape_object_path_bytestring: [bytes]
+      dtls_connection_set_advertised_protocols: [protocols]
+      file_new_build_filenamev: [args]
+      inet_address_new_from_bytes: [bytes]
+      list_store_splice: [additions]
+      pollable_output_stream_writev_nonblocking: [vectors]
+      simple_action_group_add_entries: [entries]
+      simple_proxy_resolver_new: [ignore_hosts]
+      simple_proxy_resolver_set_ignore_hosts: [ignore_hosts]
+      socket_send_message: [vectors, messages]
+      socket_receive_messages: [messages]
+      socket_receive_message: [vectors]
+      socket_send_messages: [messages]
+      socket_send_message_with_timeout: [vectors, messages]
+      themed_icon_new_from_names: [iconnames]
+      tls_connection_set_advertised_protocols: [protocols]
+      unix_fd_list_new_from_array: [fds]
+  trim_prefix:
+    types:
+      - g
+      - G
+    functions:
+      - g_
+      - glib_
+    variables:
+      - g_
+    constants:
+      - G_
+      - IO_ERROR_
+      - APP_INFO_CREATE_
+      - CONVERTER_
+      - FILE_ATTRIBUTE_INFO_
+      - FILE_QUERY_INFO_
+      - FILE_CREATE_
+      - FILE_MEASURE_
+      - MOUNT_MOUNT_
+      - MOUNT_UNMOUNT_
+      - DRIVE_START_
+      - FILE_COPY_
+      - FILE_MONITOR_
+      - ASK_PASSWORD_
+      - OUTPUT_STREAM_SPLICE_
+      - IO_STREAM_SPLICE_
+      - SOCKET_MSG_
+      - DBUS_PROXY_FLAGS_
+      - DBUS_CONNECTION_FLAGS_
+      - DBUS_CAPABILITY_FLAGS_
+      - DBUS_CALL_FLAGS_
+      - DBUS_MESSAGE_FLAGS_
+      - DBUS_PROPERTY_INFO_FLAGS_
+      - DBUS_SUBTREE_FLAGS_
+      - DBUS_SERVER_FLAGS_
+      - DBUS_SIGNAL_FLAGS_
+      - DBUS_SEND_MESSAGE_FLAGS_
+      - TLS_CERTIFICATE_
+      - TLS_PASSWORD_
+      - DBUS_INTERFACE_SKELETON_FLAGS_
+      - DBUS_OBJECT_MANAGER_CLIENT_FLAGS_
+      - TLS_DATABASE_VERIFY_
+      - TLS_DATABASE_LOOKUP_
+      - TLS_CERTIFICATE_REQUEST_
+      - IO_MODULE_SCOPE_
+      - TEST_DBUS_
+      - SETTINGS_BIND_
+    enum_type_name: true
+  extern:
+    sources:
+      "../stdinc/stdarg.h": "core:c/libc"
+      "../stdinc/pthread.h": "core:c/libc"
+      "../stdinc/sys/types.h": "core:sys/linux"
+      "../build/sys/usr/include/glib-2.0/glib/*": "glib glib:glib"
+      "../build/sys/usr/include/glib-2.0/glib.h": "glib glib:glib"
+      "../build/sys/usr/include/glib-2.0/glib/deprecated/*": "glib glib:glib"
+      "../build/sys/usr/lib/x86_64-linux-gnu/glib-2.0/include/*": "glib glib:glib"
+      "../build/sys/usr/include/glib-2.0/gobject/*": "gobj glib:gobject"
+      "../build/sys/usr/include/glib-2.0/glib-object.h": "gobj glib:gobject"
+      "../build/sys/usr/include/glib-2.0/gmodule/*": "gobj glib:gobject"
+      "../build/sys/usr/include/glib-2.0/gmodule.h": "gobj glib:gobject"
+    remaps:
+      pid_t: Pid
+      uid_t: Uid
+    trim_prefix: true
